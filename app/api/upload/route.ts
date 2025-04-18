@@ -6,7 +6,7 @@ import path from 'path';
 const UNSCREEN_API_VIDEOS_URL = "https://api.unscreen.com/v1.0/videos";
 const API_KEY = process.env.UNSCREEN_API_KEY || "PikRdjv8QN3T7AVjACbrtBzK";
 const WEBHOOK_HOST = process.env.WEBHOOK_HOST || "";
-
+export const maxDuration = 300;
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const UNSCREEN_API_VIDEOS_URL = "https://api.unscreen.com/v1.0/videos";
 const API_KEY = process.env.UNSCREEN_API_KEY || "PikRdjv8QN3T7AVjACbrtBzK";
-
+export const maxDuration = 300;
 export async function GET() {
   try {
     const response = await axios({

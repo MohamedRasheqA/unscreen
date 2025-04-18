@@ -304,12 +304,16 @@ function ProcessingContent() {
 
   useEffect(() => {
     if (!videoId) {
+      console.error('Processing error: No video ID provided');
       setError('No video ID provided');
       return;
     }
 
+    console.log(`Starting processing for video ID: ${videoId}`);
+
     const pollStatus = async () => {
       try {
+        console.log(`Polling status for video ID: ${videoId}`);
         const response = await axios({
           method: 'get',
           url: `${UNSCREEN_API_VIDEOS_URL}/${videoId}`,
@@ -318,14 +322,17 @@ function ProcessingContent() {
 
         const videoData = response.data.data;
         const videoStatus = videoData.attributes.status;
+        console.log(`Current video status: ${videoStatus}`);
         setStatus(videoStatus);
 
         if (videoStatus === 'done') {
+          console.log('Video processing complete!');
           setResultUrl(videoData.attributes.result_url);
           setShowSuccessMessage(true);
           
           // Also store the completed video in local storage
           try {
+            console.log('Saving video to local storage');
             const response = await fetch('/api/videos', {
               method: 'POST',
               headers: {
@@ -339,15 +346,19 @@ function ProcessingContent() {
             
             if (!response.ok) {
               console.error('Failed to save video to local storage');
+            } else {
+              console.log('Successfully saved video to local storage');
             }
           } catch (err) {
             console.error('Error saving video:', err);
           }
           
         } else if (videoStatus === 'failed') {
+          console.error(`Video processing failed for ID: ${videoId}`);
           setError('Video processing failed');
         } else {
           // Continue polling
+          console.log(`Video still processing (${videoStatus}), polling again in 3 seconds`);
           setTimeout(pollStatus, 3000);
         }
       } catch (err) {
